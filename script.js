@@ -1,4 +1,4 @@
-// create timmer
+
 var time = document.querySelector(".time");
 var answersArea = document.querySelector(".answers");
 var secondsLeft = 120;
@@ -28,20 +28,22 @@ var gameQuestions=[
         question:"What is my favorite anime?",
         choices:["Dragon Ball Z", "Demon Slayer", "Bleach", "Modoka Magika"],
         correctAnswer: "Dragon Ball Z"
-    }
+    },
 ];
 
 
 //Start to the quiz.
 
-function score() {
+// function score() {
 
-    var Scoring =document.querySelector(".highscore");
-    Scoring.textContent= "Score " + points
+//     var Scoring =document.querySelector(".highscore");
+//     Scoring.textContent= "Score " + points
 
 
-}
+// }
 
+
+// this is the start to the quiz
 function start() {
 
     var header = document.querySelector(".start-quiz");
@@ -50,16 +52,28 @@ function start() {
     var startMenu = document.querySelector(".start");
 
     header.textContent = "Welcome to the quiz!";
-    body.textContent = "This is a quiz about me! Have fun trying to answer questions about someone you dont even know!";
+    body.textContent = "This is a quiz about me! Have fun trying to answer questions about someone you dont even know! Each question is worth several points!";
     startButton.textContent ="START!";
     startButton.addEventListener("click", function() {
         startMenu.setAttribute("hidden", true);
-        score();
+        // score();
         timeLeft();
         questionAll();
     }
     
     );
+}
+
+//this is the end text that will appear on screen after the end to reveal how many points the player got
+
+function end(){
+    var header = document.querySelector(".end-quiz");
+    var body = document.querySelector(".end-body");
+
+    header.textContent = "Thanks for playing!";
+    body.textContent = "You got " + points + " points!";
+    gameQuestions.setAttribute("hidden", true)
+
 }
 
 // Displays whatever the current question is
@@ -82,6 +96,7 @@ function questionAll(){
 
 
 //makes choices into a button
+//loop through the array of objects and checks to see if the answers are right then adds to points if the answer was correct
 function printBtn(choices, correctAnswer){
 
 
@@ -99,20 +114,25 @@ function printBtn(choices, correctAnswer){
     answersArea.addEventListener("click", function(event){
         if( event.target.matches("button")){
             if(event.target.getAttribute("data-correct") === "yes"){
-            points++
+                points++ 
             }
             else{
                 secondsLeft = secondsLeft-10
             }
-            gameIndex++
+                ++gameIndex
             if(gameIndex < gameQuestions.length){
                 answersArea.innerHTML = "";
                 questionAll()
                 secondsLeft.setAttribute("hidden", true)
             }
             else{
-                return;
-            }
+                end();
+                localStorage.setItem(points)
+            
+                }
+                
+
+            
                 
             
 
@@ -132,6 +152,8 @@ function printBtn(choices, correctAnswer){
 // incrtease game index by 1
 // question()
 
+
+//this is my timer function. it decreases time for every wrong answer
 function timeLeft() {
 
     var timerInterval = setInterval(function() {
